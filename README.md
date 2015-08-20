@@ -30,6 +30,22 @@ class MyApi < Grape::API
 end
 ```
 
+You now have a `current_user` method available in your endpoints:
+
+```ruby
+class MyApi < Grape::API
+  format :json
+
+  use Grape::Knock::Authenticable
+
+  resource :comments do
+    get do
+      current_user.comments
+    end
+  end
+end
+```
+
 The gem will raise `Grape::Knock::ForbiddenError` when authentication failed. You can rescue this exception in your API
 in order to respond with a `403 Forbidden` http request:
 
