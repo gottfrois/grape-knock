@@ -59,7 +59,7 @@ module Grape
       end
 
       def header_name
-        ('HTTP_AUTHORIZATION' || @options[:header_name)).freeze
+        ('HTTP_AUTHORIZATION' || @options[:header_name]).freeze
       end
 
       def token
