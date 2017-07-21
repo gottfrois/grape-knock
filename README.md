@@ -46,6 +46,8 @@ class MyApi < Grape::API
 end
 ```
 
+
+
 The gem will raise `Grape::Knock::ForbiddenError` when authentication failed. You can rescue this exception in your API
 in order to respond with a `403 Forbidden` http request:
 
@@ -83,4 +85,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
