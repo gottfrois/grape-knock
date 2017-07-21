@@ -58,8 +58,12 @@ module Grape
         "current_#{entity_class.to_s.parameterize.underscore}".freeze
       end
 
+      def header_name
+        ('HTTP_AUTHORIZATION' || @options[:header_name)).freeze
+      end
+
       def token
-        env['HTTP_AUTHORIZATION'].to_s.split(' ').last
+        env[header_name].to_s.split(' ').last
       end
     end
   end
