@@ -20,7 +20,6 @@ module Grape
       def before
         authenticate
         context.extend Grape::Knock::Methods
-        context.current_user = @current_user
       end
 
       private
