@@ -1,7 +1,6 @@
 require 'knock'
 require 'knock/authenticable'
 require 'grape/knock/forbidden_error'
-require 'grape/knock/methods'
 
 module Grape
   module Knock
@@ -19,7 +18,10 @@ module Grape
 
       def before
         authenticate
-        context.extend Grape::Knock::Methods
+
+        memoization_var_name = "@_#{getter_name}"
+        context.send(:instance_variable_set, memoization_var_name, send(getter_name))
+        context.class.send(:define_method, getter_name) { instance_variable_get memoization_var_name }
       end
 
       private
