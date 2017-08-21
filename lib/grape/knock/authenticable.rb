@@ -1,7 +1,6 @@
 require 'knock'
 require 'knock/authenticable'
 require 'grape/knock/forbidden_error'
-require 'grape/knock/methods'
 
 module Grape
   module Knock
@@ -19,8 +18,10 @@ module Grape
 
       def before
         authenticate
-        context.extend Grape::Knock::Methods
-        context.current_user = @current_user
+
+        memoization_var_name = "@_#{getter_name}"
+        context.send(:instance_variable_set, memoization_var_name, send(getter_name))
+        context.class.send(:define_method, getter_name) { instance_variable_get memoization_var_name }
       end
 
       private
@@ -58,8 +59,12 @@ module Grape
         "current_#{entity_class.to_s.parameterize.underscore}".freeze
       end
 
+      def header_name
+        (@options[:header_name] || 'HTTP_AUTHORIZATION').freeze
+      end
+
       def token
-        env['HTTP_AUTHORIZATION'].to_s.split(' ').last
+        env[header_name].to_s.split(' ').last
       end
     end
   end
